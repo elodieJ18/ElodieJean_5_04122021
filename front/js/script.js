@@ -26,6 +26,17 @@ function displayCouches(products) {
         </article>
       `;
   }
+
+  let a = document.querySelectorAll("a");
+  console.log(a);
+
+  a.forEach((a) =>
+    a.addEventListener("click", () => {
+      console.log(a);
+
+      window.location = `product.html?${bouton.id}`;
+    })
+  );
 }
 
 /*<!--           <a href="./product.html?id=42">
