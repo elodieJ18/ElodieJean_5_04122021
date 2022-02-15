@@ -54,6 +54,32 @@ const produitDisplay = async () => {
   document.getElementById(
     "addToCart"
   ).innerHTML = `<button id="${productData._id}">Ajouter au panier</button>`;
+
+  addCart(productData);
 };
 
 produitDisplay();
+
+const addCart = () => {
+  let button = document.getElementById(productData._id);
+  console.log(button);
+  button.addEventListener("click", () => {
+    let productTableau = JSON.parse(localStorage.getItem("product"));
+    let select = document.getElementById("colors");
+    console.log(select.value);
+    console.log(productTableau);
+
+    const fusionproductColors = Object.assign({}, productData, {
+      colors: `${select.value}`,
+      quantite: 1,
+    });
+    console.log(fusionproductColors);
+
+    if (productTableau == null) {
+      productTableau = [];
+      productTableau.push(fusionproductColors);
+      console.log(productTableau);
+      localStorage.setItem("product", JSON.stringify(productTableau));
+    }
+  });
+};
