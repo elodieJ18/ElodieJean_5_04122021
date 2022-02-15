@@ -15,45 +15,45 @@ const fetchProduct = async () => {
 
 const produitDisplay = async () => {
   await fetchProduct();
-  let main = (document.getElementsByTagName("main").innerHTML = `
-  <article>
-  <div class="item__img">
-              <!-- <img src="${productData.imageUrl}" alt="${productData.altTxt}"> -->
-            </div>
-            <div class="item__content">
 
-              <div class="item__content__titlePrice">
-                <h1 id="title">${productData.name}</h1>
-                <p>Prix : <span id="price">${productData.price}</span>€</p>
-              </div>
+  document.querySelector(
+    ".item__img"
+  ).innerHTML = `<img src="${productData.imageUrl}" alt="${productData.altTxt}">`; /*le document.getElementsByTagName ne marchait pas */
 
-              <div class="item__content__description">
-                <p class="item__content__description__title">Description :</p>
-                <p id="description">${productData.description}</p>
-              </div>
+  document.getElementById(
+    "title"
+  ).innerHTML = `${productData.name}`; /*pas besoin de remettre tout le htlm puisque l'id est avant l'élement changeant*/
 
-              <div class="item__content__settings">
-                <div class="item__content__settings__color">
-                  <label for="color-select">Choisir une couleur :</label>
-                  <select name="color-select" id="colors">
-                      <option value="">--SVP, choisissez une couleur --</option>
-                      ${productData.colors}
-                  </select>
-                </div>
+  document.getElementById(
+    "price"
+  ).innerHTML = `${productData.price}`; /*pas besoin de remettre tout le htlm puisque l'id est avant l'élement changeant*/
 
-                <div class="item__content__settings__quantity">
-                  <label for="itemQuantity">Nombre d'article(s) (1-100) :</label>
-                  <input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity">
-                </div>
-              </div>
+  document.getElementById(
+    "description"
+  ).innerHTML = `${productData.description}`;
 
-              <div class="item__content__addButton">
-                <button id="addToCart">Ajouter au panier</button>
-              </div>
-            </div>
-          </article>`);
+  /*option des couleurs*/
 
-  console.log(main);
+  let select = document.getElementById("colors");
+  console.log(select);
+
+  console.log(productData.colors);
+
+  productData.colors.forEach((colors) => {
+    console.log(document.createElement("option"));
+    let tagOption = document.createElement("option");
+
+    tagOption.innerHTML = `${colors}`;
+    tagOption.value = `${colors}`;
+
+    select.appendChild(tagOption);
+    console.log(tagOption);
+  });
+  /*bouton ajouter au panier*/
+
+  document.getElementById(
+    "addToCart"
+  ).innerHTML = `<button id="${productData._id}">Ajouter au panier</button>`;
 };
 
 produitDisplay();
