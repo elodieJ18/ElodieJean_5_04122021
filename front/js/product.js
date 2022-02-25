@@ -67,6 +67,10 @@ const addCart = () => {
     let itemColor = document.querySelector("#colors").value;
     let itemOrdered = JSON.parse(localStorage.getItem("itemOrdered"));
 
+    if (itemColor === "" || itemColor == null) {
+      alert("Choisissez une couleur");
+    }
+
     if (itemOrdered == null) {
       itemOrdered = [];
     }
