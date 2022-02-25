@@ -16,9 +16,9 @@ const fetchProduct = async () => {
 const produitDisplay = async () => {
   await fetchProduct();
 
-  document.querySelector(
-    ".item__img"
-  ).innerHTML = `<img src="${productData.imageUrl}" alt="${productData.altTxt}">`; /*le document.getElementsByTagName ne marchait pas */
+  document.getElementsByClassName(
+    "item__img"
+  )[0].innerHTML = `<img src="${productData.imageUrl}" alt="${productData.altTxt}">`; /*le document.getElementsByTagName ne marchait pas */
 
   document.getElementById(
     "title"
@@ -54,7 +54,6 @@ const produitDisplay = async () => {
   document.getElementById(
     "addToCart"
   ).innerHTML = `<button id="${productData._id}">Ajouter au panier</button>`;
-
   addCart(productData);
 };
 
@@ -64,22 +63,41 @@ const addCart = () => {
   let button = document.getElementById(productData._id);
   console.log(button);
   button.addEventListener("click", () => {
-    let productTableau = JSON.parse(localStorage.getItem("product"));
-    let select = document.getElementById("colors");
-    console.log(select.value);
-    console.log(productTableau);
+    let itemQuantity = document.querySelector("#quantity").value;
+    let itemColor = document.querySelector("#colors").value;
+    let itemOrdered = JSON.parse(localStorage.getItem("itemOrdered"));
 
-    const fusionproductColors = Object.assign({}, productData, {
-      colors: `${select.value}`,
-      quantite: 1,
-    });
-    console.log(fusionproductColors);
-
-    if (productTableau == null) {
-      productTableau = [];
-      productTableau.push(fusionproductColors);
-      console.log(productTableau);
-      localStorage.setItem("product", JSON.stringify(productTableau));
+    if (itemOrdered == null) {
+      itemOrdered = [];
     }
+
+    let selectedProduct = {
+      id: productData._id,
+      quantity: itemQuantity,
+      color: itemColor,
+    };
+
+    if (localStorage.itemOrdered == null) {
+      itemOrdered.push(selectedProduct);
+    } else if (
+      localStorage.itemOrdered.includes(selectedProduct.id) &&
+      localStorage.itemOrdered.includes(selectedProduct.color)
+    ) {
+      for (let i = 0; i < itemOrdered.length; i++) {
+        if (
+          itemOrdered[i].id === selectedProduct.id &&
+          itemOrdered[i].color === selectedProduct.color
+        ) {
+          let index = itemOrdered[i];
+          let newValue =
+            Number(selectedProduct.quantity) + Number(index.quantity);
+
+          index.quantity = newValue.toString();
+        }
+      }
+    } else {
+      itemOrdered.push(selectedProduct);
+    }
+    localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
   });
 };
