@@ -69,6 +69,7 @@ const addCart = () => {
 
     if (itemColor === "" || itemColor == null) {
       alert("Choisissez une couleur");
+      itemColor.pull(selectedProduct);
     }
 
     if (itemOrdered == null) {
