@@ -29,12 +29,12 @@ const fetchProduct = async () => {
       console.log(productData);
     });
 };
-
-let image = document.querySelector(".cart__item__img");
-console.log(image);
+/*
+var id = ProductLocalStorage.getItem("id");
+console.log(id);
 
 let productSelection = {};
-
+*/
 /*Le but est de réutiliser l'id afficher dans le localstorage */
 /*pour pouvoir afficher ce qu'il manque */
 
@@ -48,7 +48,7 @@ const cartDisplay = async () => {
         product
       ) => `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
       <div class="cart__item__img">
-        <img src="" alt="">
+      <img src="../images/product01.jpg" alt="Photographie d'un canapé">
       </div>
       <div class="cart__item__content">
         <div class="cart__item__content__description">
