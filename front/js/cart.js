@@ -1,8 +1,8 @@
 /*LocaStorage */
 /*Qui contient l'id, la quantité et la couleur */
 
-let ProductLocalStorage = JSON.parse(localStorage.getItem("itemOrdered"));
-console.log(ProductLocalStorage);
+let productLocalStorage = JSON.parse(localStorage.getItem("itemOrdered"));
+console.log(productLocalStorage);
 
 /*API poru appeler ce qui n'est pas dans le local storage */
 /*Img, Titre, Description et Prix */
@@ -10,14 +10,6 @@ console.log(ProductLocalStorage);
 const urlString = window.location.href;
 const url = new URL(urlString);
 console.log("http://localhost:3000/api/products/");
-/*const productId = url.searchParams.get("id");
-const productId = `http://localhost:3000/api/products/${ProductLocalStorage.id}`;
-console.log(productId);*/
-
-/*Solution est de peut-être faire un tableau 
-qui appelera dans l'api ce qu'il manque 
-mais il faut quand même que l'id du local soit lié à l'api
-donc peut-être faire un tableau en appelant le local storage + le reste*/
 
 let productData = [];
 
@@ -29,30 +21,38 @@ const fetchProduct = async () => {
       console.log(productData);
     });
 };
-/*
-var id = ProductLocalStorage.getItem("id");
-console.log(id);
 
-let productSelection = {};
-*/
+/*
+let productFusion = {
+  this.id = id;
+  this.quantity = quantity;
+};
+console.log(productFusion); */
+
+/*Solution est de peut-être faire un tableau 
+qui appelera dans l'api ce qu'il manque 
+mais il faut quand même que l'id du local soit lié à l'api
+donc peut-être faire un tableau en appelant le local storage + le reste*/
+
 /*Le but est de réutiliser l'id afficher dans le localstorage */
 /*pour pouvoir afficher ce qu'il manque */
 
 const cartDisplay = async () => {
-  if (ProductLocalStorage) {
-    await ProductLocalStorage;
+  if (productLocalStorage) {
+    await productLocalStorage;
+    await fetchProduct();
     /*Le DOM est appelé tout ce qui est dans le localStorage est affiché */
 
-    document.getElementById("cart__items").innerHTML = ProductLocalStorage.map(
+    document.getElementById("cart__items").innerHTML = productLocalStorage.map(
       (
         product
       ) => `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
       <div class="cart__item__img">
-      <img src="../images/product01.jpg" alt="Photographie d'un canapé">
+      <img src="" alt="Photographie d'un canapé">
       </div>
       <div class="cart__item__content">
         <div class="cart__item__content__description">
-          <h2>${product.name}</h2>
+          <h2></h2>
           <p>${product.colors}</p>
           <p>€</p>
         </div>

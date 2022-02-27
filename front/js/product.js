@@ -103,6 +103,6 @@ const addCart = () => {
     } else {
       itemOrdered.push(selectedProduct);
     }
-    localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
+    window.localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
   });
 };
