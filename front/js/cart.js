@@ -4,8 +4,7 @@
 let productLocalStorage = JSON.parse(localStorage.getItem("itemOrdered"));
 
 /*On appelle l'api */
-for (let i = 0; i < productLocalStorage.lenght; i++) {
-  console.log(productLocalStorage);
+for (let i = 0; i < productLocalStorage.length; i++) {
   fetch(`http://localhost:3000/api/products/${productLocalStorage[i].id}`)
     .then((res) => res.json())
     .then((data) => {
@@ -13,7 +12,7 @@ for (let i = 0; i < productLocalStorage.lenght; i++) {
       function cartDisplay(data) {
         console.log("here ");
         let article = document.createElement("article");
-        article.querySelector("#cart__items").appendChild(article);
+        document.querySelector("#cart__items").appendChild(article);
         article.setAttribute("class", "cart__item");
         article.setAttribute("data-id", `${data.id}`);
         article.setAttribute("data-color", `${data.color}`);

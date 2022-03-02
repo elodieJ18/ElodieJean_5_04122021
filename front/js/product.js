@@ -72,7 +72,7 @@ const addCart = async () => {
     /*Alerte si la couleur n'est pas choisi */
     if (itemColor === "" || itemColor == null) {
       alert("Choisissez une couleur");
-      itemColor.pull(selectedProduct);
+      return;
     }
 
     /*Si le localstorage est vide alors on fait un tableau pour le localstorage*/
