@@ -112,19 +112,6 @@ const addCart = async () => {
       itemOrdered.push(selectedProduct);
     }
 
-    /*création d'un objet pour faire apparaître les détails*/
-    /* let SelectedProductDetails = {
-      id: selectedProduct.id,
-      img: productData.imageUrl,
-      imgAlt: productData.altTxt,
-      title: productData.name,
-      description: productData.description,
-      price: productData.price,
-    };
-    console.log(SelectedProductDetails);*/
-
-    /*window.location = `cart.html?${itemOrdered}`;*/
-
     localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
   });
 };
