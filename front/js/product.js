@@ -13,12 +13,13 @@ const fetchProduct = async () => {
     });
 };
 
+/*fonction qui appel le dom */
 const produitDisplay = async () => {
   await fetchProduct();
 
   document.getElementsByClassName(
     "item__img"
-  )[0].innerHTML = `<img src="${productData.imageUrl}" alt="${productData.altTxt}">`; /*le document.getElementsByTagName ne marchait pas */
+  )[0].innerHTML = `<img src="${productData.imageUrl}" alt="${productData.altTxt}">`; /*le document.getElementsByTagName ne marchait pas parce qu'il manquait [0] */
 
   document.getElementById(
     "title"
@@ -33,7 +34,6 @@ const produitDisplay = async () => {
   ).innerHTML = `${productData.description}`;
 
   /*option des couleurs*/
-
   let select = document.getElementById("colors");
   console.log(select);
 
@@ -57,30 +57,38 @@ const produitDisplay = async () => {
   addCart(productData);
 };
 
+/*lecture de la fonction */
 produitDisplay();
 
-const addCart = () => {
+/*dans le addCart rajouter l'image est la descriptio, etc..*/
+
+const addCart = async () => {
   let button = document.getElementById(productData._id);
   console.log(button);
   button.addEventListener("click", () => {
     let itemQuantity = document.querySelector("#quantity").value;
     let itemColor = document.querySelector("#colors").value;
     let itemOrdered = JSON.parse(localStorage.getItem("itemOrdered"));
-
+    /*Alerte si la couleur n'est pas choisi */
     if (itemColor === "" || itemColor == null) {
       alert("Choisissez une couleur");
       itemColor.pull(selectedProduct);
     }
 
+    /*Si le localstorage est vide alors on fait un tableau pour le localstorage*/
     if (itemOrdered == null) {
       itemOrdered = [];
     }
+
+    /*création d'un objet pour l'envoyer dans le local storage */
 
     let selectedProduct = {
       id: productData._id,
       quantity: itemQuantity,
       color: itemColor,
     };
+
+    /*Instruction du storage*/
 
     if (localStorage.itemOrdered == null) {
       itemOrdered.push(selectedProduct);
@@ -103,6 +111,20 @@ const addCart = () => {
     } else {
       itemOrdered.push(selectedProduct);
     }
-    window.localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
+
+    /*création d'un objet pour faire apparaître les détails*/
+    /* let SelectedProductDetails = {
+      id: selectedProduct.id,
+      img: productData.imageUrl,
+      imgAlt: productData.altTxt,
+      title: productData.name,
+      description: productData.description,
+      price: productData.price,
+    };
+    console.log(SelectedProductDetails);*/
+
+    /*window.location = `cart.html?${itemOrdered}`;*/
+
+    localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
   });
 };

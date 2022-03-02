@@ -1,16 +1,14 @@
-/*LocaStorage */
+/*Appelle LocaStorage */
 /*Qui contient l'id, la quantité et la couleur */
 
 let productLocalStorage = JSON.parse(localStorage.getItem("itemOrdered"));
-console.log(productLocalStorage);
 
-/*API poru appeler ce qui n'est pas dans le local storage */
-/*Img, Titre, Description et Prix */
+/*On appelle l'api */
 
 const urlString = window.location.href;
 const url = new URL(urlString);
+const productId = url.searchParams.get("id");
 console.log("http://localhost:3000/api/products/");
-
 let productData = [];
 
 const fetchProduct = async () => {
@@ -22,33 +20,23 @@ const fetchProduct = async () => {
     });
 };
 
-/*
-let productFusion = {
-  this.id = id;
-  this.quantity = quantity;
+/*Appelle de l'id du localStorage par le DOM*/
+
+const callProductId = async (productId) => {
+  console.log(productId);
 };
-console.log(productFusion); */
 
-/*Solution est de peut-être faire un tableau 
-qui appelera dans l'api ce qu'il manque 
-mais il faut quand même que l'id du local soit lié à l'api
-donc peut-être faire un tableau en appelant le local storage + le reste*/
+/*Comparaison de  */
 
-/*Le but est de réutiliser l'id afficher dans le localstorage */
-/*pour pouvoir afficher ce qu'il manque */
-
+/*Le DOM est appelé tout ce qui est dans le localStorage est affiché */
 const cartDisplay = async () => {
-  if (productLocalStorage) {
-    await productLocalStorage;
-    await fetchProduct();
-    /*Le DOM est appelé tout ce qui est dans le localStorage est affiché */
-
-    document.getElementById("cart__items").innerHTML = productLocalStorage.map(
-      (
-        product
-      ) => `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
+  await fetchProduct();
+  document.getElementById("cart__items").innerHTML = productLocalStorage.map(
+    (product) => `<article class="cart__item" data-id="${
+      product.id
+    }" data-color="${product.color}">
       <div class="cart__item__img">
-      <img src="" alt="Photographie d'un canapé">
+      <img src="${callProductId(product.id)}" alt="Photographie d'un canapé">
       </div>
       <div class="cart__item__content">
         <div class="cart__item__content__description">
@@ -59,7 +47,9 @@ const cartDisplay = async () => {
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
             <p>Qté :</p>
-            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${
+              product.quantity
+            }">
           </div>
           <div class="cart__item__content__settings__delete">
             <p class="deleteItem">Supprimer</p>
@@ -67,8 +57,10 @@ const cartDisplay = async () => {
         </div>
       </div>
     </article>`
-    );
-  }
+  );
+
+  /* let select = document.querySelectorAll(".cart__item");
+    console.log(select("data-id"));*/
 };
 
 cartDisplay();
