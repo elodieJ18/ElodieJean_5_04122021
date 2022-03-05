@@ -18,10 +18,10 @@ for (let i = 0; i < productLocalStorage.length; i++) {
             <div class="cart__item__content__description">
               <h2>${data.name}</h2>
               <p>${productLocalStorage[i].color}</p>
-              <p>${
-                productLocalStorage[i].quantity *
-                data.price.toString().replace(/00/, "")
-              } €</p>
+              <p data-id="${data.id}"  data-color="${data.color}">${
+          productLocalStorage[i].quantity *
+          data.price.toString().replace(/00/, "")
+        } €</p>
             </div>
             <div class="cart__item__content__settings">
               <div class="cart__item__content__settings__quantity">
@@ -38,33 +38,26 @@ for (let i = 0; i < productLocalStorage.length; i++) {
             </div>
           </div>`;
       }
-      const addNewQuantity = async () => {
+      const addNewQuantity = async (cartDisplay) => {
+        await cartDisplay;
         let input = document.querySelector("input");
-        input.addEventListener("click", () => {
-          for (let i = 0; i < productLocalStorage.length; i++) {
+        for (let i = 0; i < productLocalStorage.length; i++) {
+          input.addEventListener("click", () => {
             if (
               productLocalStorage[i]._id == data.id &&
               productLocalStorage[i].colors == data.color
             ) {
-              /*En appelant l'input.value directement nous obtenons ce que l'on veut mais seulement pour le premier article*/
-
               return (
-                /*adapter le prix à la modification au click SOUCIS DE BOUCLE QUI AU CLICK PAS TOUT LES ELEMENTS SE LISENT*/
                 (document.querySelectorAll(
                   ".cart__item__content__description >p:last-child"
                 )[i].textContent = `${
-                  document.querySelector("input").value *
-                  data.price.toString().replace(/00/, "")
+                  input[i].value * data.price.toString().replace(/00/, "")
                 } €`),
-                /*l'appeler sur le localstorage */
-                (document.querySelectorAll("input")[i].textContent +=
-                  document.querySelector("input").value),
-                localStorage.setItem("data", JSON.stringify(data)),
-                console.log("quantité++")
+                console.log("Newquantité")
               );
             }
-          }
-        });
+          });
+        }
       };
       addNewQuantity();
       cartDisplay(data);
