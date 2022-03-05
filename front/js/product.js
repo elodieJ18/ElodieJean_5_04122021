@@ -96,6 +96,7 @@ const addCart = async () => {
       localStorage.itemOrdered.includes(selectedProduct.id) &&
       localStorage.itemOrdered.includes(selectedProduct.color)
     ) {
+      /*instruction pour la couleur et la quantité*/
       for (let i = 0; i < itemOrdered.length; i++) {
         if (
           itemOrdered[i].id === selectedProduct.id &&
@@ -109,9 +110,10 @@ const addCart = async () => {
         }
       }
     } else {
+      /*dernière condition push le tableau 'selectedProduct" après les instructions*/
       itemOrdered.push(selectedProduct);
     }
-
+    /*envoyé tout dans au localstorage */
     localStorage.setItem("itemOrdered", JSON.stringify(itemOrdered));
   });
 };
