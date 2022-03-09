@@ -5,7 +5,6 @@ for (let i = 0; i < productLocalStorage.length; i++) {
     .then((res) => res.json())
     .then((data) => {
       function cartDisplay(data) {
-        console.log(data);
         let article = document.createElement("article");
         document.querySelector("#cart__items").appendChild(article);
         article.setAttribute("class", "cart__item");
@@ -19,21 +18,12 @@ for (let i = 0; i < productLocalStorage.length; i++) {
             <div class="cart__item__content__description">
               <h2>${data.name}</h2>
               <p>${productLocalStorage[i].color}</p>
-              <p data-id="${data._id}"  data-color="${
-          productLocalStorage[i].color
-        }">${
-          productLocalStorage[i].quantity *
-          data.price.toString().replace(/00/, "")
-        } €</p>
+              <p> ${data.price}</p>
             </div>
             <div class="cart__item__content__settings">
               <div class="cart__item__content__settings__quantity">
                 <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" data-id="${
-                  data._id
-                }"  data-color="${productLocalStorage[i].color}" value="${
-          productLocalStorage[i].quantity
-        }">
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100"  value="${productLocalStorage[i].quantity}">
               </div>
               <div class="cart__item__content__settings__delete">
                 <p class="deleteItem" >Supprimer</p>
@@ -43,37 +33,31 @@ for (let i = 0; i < productLocalStorage.length; i++) {
       }
       cartDisplay(data);
 
-      for (let i = 0; i < productLocalStorage.length; i++) {
-        if (productLocalStorage[i].id === data._id) {
-          let buttonQuantity = document.querySelectorAll(".itemQuantity");
+      // data-id="${data._id}"  data-color="${productLocalStorage[i].color}"
 
-          buttonQuantity.forEach((buttonQuantity) => {
-            console.log(buttonQuantity);
-            buttonQuantity.addEventListener("click", () => {
-              productLocalStorage[i].quantity,
-                localStorage.setItem(
-                  "data",
-                  JSON.stringify(productLocalStorage, "quantity")
-                ),
-                (document.querySelectorAll(
-                  ".cart__item__content__description >p:last-child"
-                )[i].textContent = `${
-                  productLocalStorage[i].quantity *
-                  data.price.toString().replace(/00/, "")
-                } €`);
-              document.querySelectorAll(".itemQuantity")[i].textContent =
-                productLocalStorage[i].quantity++;
-              console.log("quantité++");
-            });
-          });
-        }
+      function upDateQuantity() {
+        let buttonQuantity = document.querySelectorAll(".itemQuantity");
+        i = buttonQuantity.length - 1;
+        console.log(i);
+        console.log(buttonQuantity[i]);
+        buttonQuantity[i].addEventListener("change", () => {
+          if (this.value <= 0) {
+            this.value = 0;
+            productLocalStorage.splice(i, 1);
+          } else if (this.value > 100) {
+            this.value = 100;
+            productLocalStorage[i].quantity = 100;
+          } else {
+            productLocalStorage[i].quantity = this.value;
+          }
+          localStorage.setItem(
+            "itemOrdered",
+            JSON.stringify(productLocalStorage)
+          );
+          location.reload();
+        });
       }
-
-      let totalAddproduct = productLocalStorage.length;
-      for (let i = 0; i < totalAddproduct; i++) console.log(totalAddproduit);
-      if (productLocalStorage[i].quantity == 1 && totalAddproduct == 1) {
-        return localStorage.removeItem("product");
-      }
+      upDateQuantity();
     })
     .catch((error) => console.log(`Une erreur est survenue: ${error}`));
 }
