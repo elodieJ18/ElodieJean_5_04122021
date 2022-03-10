@@ -37,18 +37,19 @@ for (let i = 0; i < productLocalStorage.length; i++) {
 
       function upDateQuantity() {
         let buttonQuantity = document.querySelectorAll(".itemQuantity");
+
         i = buttonQuantity.length - 1;
         console.log(i);
         console.log(buttonQuantity[i]);
         buttonQuantity[i].addEventListener("change", () => {
-          if (this.value <= 0) {
-            this.value = 0;
+          if (buttonQuantity[i].value <= 0) {
+            buttonQuantity[i].value = 0;
             productLocalStorage.splice(i, 1);
-          } else if (this.value > 100) {
-            this.value = 100;
+          } else if (buttonQuantity[i].value > 100) {
+            buttonQuantity[i].value = 100;
             productLocalStorage[i].quantity = 100;
           } else {
-            productLocalStorage[i].quantity = this.value;
+            productLocalStorage[i].quantity = buttonQuantity[i].value;
           }
           localStorage.setItem(
             "itemOrdered",
