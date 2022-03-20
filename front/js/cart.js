@@ -154,11 +154,8 @@ function allForm() {
     let itemCity = document.querySelector("#city").value;
     let itemEmail = document.querySelector("#email").value;
 
-    let form = JSON.parse(localStorage.getItem("form"));
-
-    if (form == null) {
-      form = [];
-    }
+    let orderId = productLocalStorage.id;
+    console.log(orderId);
 
     let formValue = {
       firstNam: itemFirstName,
@@ -167,71 +164,24 @@ function allForm() {
       city: itemCity,
       email: itemEmail,
     };
-    if (localStorage.form == null) {
-      form.push(formValue);
-    }
-    console.log(form);
-
-    localStorage.setItem("form", JSON.stringify(form));
-
-    /*---------------envoyer-------*/
-    let sendOrder = JSON.parse(localStorage.getItem("sendOrder"));
-
-    if (sendOrder == null) {
-      sendOrder = [];
-    }
 
     let sendAll = {
-      productLocalStorage,
-      form,
+      orderId,
+      formValue,
     };
 
-    if (localStorage.sendOrder == null) {
-      sendOrder.push(sendAll);
-    }
-    console.log(sendOrder);
-
-    localStorage.setItem("sendOrder", JSON.stringify(sendOrder));
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendAll),
+    }).then(function (res) {
+      if (res.ok) {
+        return res.json();
+      }
+    });
   });
 }
 allForm();
-
-/*
-let itemOrdered = JSON.parse(localStorage.getItem("AllFormulaire"));
-let btnorder = document.querySelector("#order");
-btnorder.addEventListener("click", () => {
-  localStorage.setItem("firstName", document.querySelector("#firstName").value);
-});
-/*
-<form method="get" class="cart__order__form">
-                <div class="cart__order__form__question">
-                  <label for="firstName">Prénom: </label>
-                  <input type="text" name="firstName" id="firstName" required />
-                  <p id="firstNameErrorMsg">
-                    <!-- ci est un message d'erreur -->
-                  </p>
-                </div>
-                <div class="cart__order__form__question">
-                  <label for="lastName">Nom: </label>
-                  <input type="text" name="lastName" id="lastName" required />
-                  <p id="lastNameErrorMsg"></p>
-                </div>
-                <div class="cart__order__form__question">
-                  <label for="address">Adresse: </label>
-                  <input type="text" name="address" id="address" required />
-                  <p id="addressErrorMsg"></p>
-                </div>
-                <div class="cart__order__form__question">
-                  <label for="city">Ville: </label>
-                  <input type="text" name="city" id="city" required />
-                  <p id="cityErrorMsg"></p>
-                </div>
-                <div class="cart__order__form__question">
-                  <label for="email">Email: </label>
-                  <input type="email" name="email" id="email" required />
-                  <p id="emailErrorMsg"></p>
-                </div>
-                <div class="cart__order__form__submit">
-                  <input type="submit" value="Commander !" id="order" />
-                </div>
-              </form>*/
