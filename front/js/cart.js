@@ -147,13 +147,31 @@ for (let i = 0; i < productLocalStorage.length; i++) {
 /*-------------------------------------Formulaire---Validation----------------------------------------- */
 function allForm() {
   let btnorder = document.querySelector("#order");
-  btnorder.addEventListener("click", () => {
-    let itemFirstName = document.querySelector("#firstName").value;
-    let itemLastName = document.querySelector("#lastName").value;
-    let itemAddress = document.querySelector("#address").value;
-    let itemCity = document.querySelector("#city").value;
-    let itemEmail = document.querySelector("#email").value;
+  let itemFirstName = document.querySelector("#firstName").value;
+  let itemLastName = document.querySelector("#lastName").value;
+  let itemAddress = document.querySelector("#address").value;
+  let itemCity = document.querySelector("#city").value;
+  let itemEmail = document.querySelector("#email").value;
 
+  itemEmail.value.addEventListener("change", function () {
+    validEmail(this);
+  });
+
+  const validEmail = function (inputEmail) {
+    let emailRegExp = new RegExp(
+      "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+    );
+
+    let testEmail = emailRegExp.test(inputEmail.value);
+    let errorMessage = inputEmail.nextElementSibling;
+    if (testEmail) {
+      errorMessage.innerHTML = "Adresse Valide";
+    } else {
+      errorMessage.innerHTML = "Adresse n'est pas Valide";
+    }
+  };
+
+  btnorder.addEventListener("click", () => {
     let orderId = productLocalStorage.id;
     console.log(orderId);
 
