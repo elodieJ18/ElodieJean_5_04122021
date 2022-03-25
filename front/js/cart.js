@@ -138,6 +138,7 @@ for (let i = 0; i < productLocalStorage.length; i++) {
         document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
         console.log(totalPrice);
       }
+
       addAllprice();
     })
     /*---------------------------------------------------- */
@@ -146,60 +147,160 @@ for (let i = 0; i < productLocalStorage.length; i++) {
 
 /*-------------------------------------Formulaire---Validation----------------------------------------- */
 function allForm() {
-  let btnorder = document.querySelector("#order");
-  let itemFirstName = document.querySelector("#firstName").value;
-  let itemLastName = document.querySelector("#lastName").value;
-  let itemAddress = document.querySelector("#address").value;
-  let itemCity = document.querySelector("#city").value;
-  let itemEmail = document.querySelector("#email").value;
+  let form = document.querySelector(".cart__order__form");
+  let emailRegExp = new RegExp(
+    "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+  );
+  let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+  let addressRegExp = new RegExp(
+    "^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
+  );
 
-  itemEmail.value.addEventListener("change", function () {
+  form.firstName.addEventListener("change", function () {
+    validFirstName(this);
+  });
+
+  form.lastName.addEventListener("change", function () {
+    validLastName(this);
+  });
+
+  form.address.addEventListener("change", function () {
+    validAddress(this);
+  });
+
+  form.city.addEventListener("change", function () {
+    validCity(this);
+  });
+
+  form.email.addEventListener("change", function () {
     validEmail(this);
   });
 
-  const validEmail = function (inputEmail) {
-    let emailRegExp = new RegExp(
-      "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
-    );
+  const validFirstName = function (inputFirstName) {
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
 
-    let testEmail = emailRegExp.test(inputEmail.value);
-    let errorMessage = inputEmail.nextElementSibling;
-    if (testEmail) {
-      errorMessage.innerHTML = "Adresse Valide";
+    if (charRegExp.test(inputFirstName.value)) {
+      firstNameErrorMsg.innerHTML = "";
     } else {
-      errorMessage.innerHTML = "Adresse n'est pas Valide";
+      firstNameErrorMsg.innerHTML =
+        "Veuillez renseigner correctement ce champ.";
     }
   };
 
-  btnorder.addEventListener("click", () => {
-    let orderId = productLocalStorage.id;
-    console.log(orderId);
+  const validLastName = function (inputLastName) {
+    let lastNameErrorMsg = inputLastName.nextElementSibling;
 
-    let formValue = {
-      firstNam: itemFirstName,
+    if (charRegExp.test(inputLastName.value)) {
+      lastNameErrorMsg.innerHTML = "";
+    } else {
+      lastNameErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+    }
+  };
+
+  const validAddress = function (inputAddress) {
+    let addressErrorMsg = inputAddress.nextElementSibling;
+
+    if (addressRegExp.test(inputAddress.value)) {
+      addressErrorMsg.innerHTML = "";
+    } else {
+      addressErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+    }
+  };
+
+  const validCity = function (inputCity) {
+    let cityErrorMsg = inputCity.nextElementSibling;
+
+    if (charRegExp.test(inputCity.value)) {
+      cityErrorMsg.innerHTML = "";
+    } else {
+      cityErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+    }
+  };
+
+  const validEmail = function (inputEmail) {
+    let emailErrorMsg = inputEmail.nextElementSibling;
+
+    if (emailRegExp.test(inputEmail.value)) {
+      emailErrorMsg.innerHTML = "";
+    } else {
+      emailErrorMsg.innerHTML = "Veuillez renseigner correctement votre email.";
+    }
+  };
+}
+allForm();
+
+/*-------------------------------*/
+
+function send() {
+  let btnorder = document.getElementById("order");
+  console.log("avant-lecture-btn");
+
+  btnorder.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    console.log("après-lecture-btn");
+
+    /*---------------------preparation-de-l-envoie-------------------- */
+    let itemFirstName = document.querySelector("#firstName").value;
+    let itemLastName = document.querySelector("#lastName").value;
+    let itemAddress = document.querySelector("#address").value;
+    let itemCity = document.querySelector("#city").value;
+    let itemEmail = document.querySelector("#email").value;
+
+    let contact = {
+      firstName: itemFirstName,
       lastName: itemLastName,
       address: itemAddress,
       city: itemCity,
       email: itemEmail,
     };
 
+    let products = [];
+    for (let i = 0; i < productLocalStorage.length; i++) {
+      products.push(productLocalStorage[i].id);
+    }
+
+    /*-----------objet-creer--------------- */
     let sendAll = {
-      orderId,
-      formValue,
+      products,
+      contact,
     };
 
-    fetch("http://localhost:3000/api/products/order", {
+    const sendOrder = fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(sendAll),
-    }).then(function (res) {
-      if (res.ok) {
-        return res.json();
+    });
+
+    sendOrder.then(async (response) => {
+      try {
+        const content = await response.json();
+        console.log(content);
+        /*-------------ça-ne-lis-pas-la-suite-parce-que-ce-n'est pas ok */
+        if (response.ok) {
+          console.log(`Resultat de response.ok : ${response.ok}`);
+
+          console.log(content.orderId);
+          localStorage.setItem("responseId", content.orderId);
+
+          /*window.location = "confirmation-commande.html"*/
+        } else {
+          console.log(`Réponse du serveur : ${response.status}`);
+          alert(`Problème avec le serveur : erreur ${response.status}`);
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
+    console.log(sendOrder);
   });
+
+  /* .then(function (value) {
+      document.getElementById("result").innerText = value.postData.text;
+    });*/
 }
-allForm();
+
+send();
