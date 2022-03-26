@@ -233,12 +233,8 @@ allForm();
 
 function send() {
   let btnorder = document.getElementById("order");
-  console.log("avant-lecture-btn");
-
   btnorder.addEventListener("click", (e) => {
     e.preventDefault();
-
-    console.log("après-lecture-btn");
 
     /*---------------------preparation-de-l-envoie-------------------- */
     let itemFirstName = document.querySelector("#firstName").value;
@@ -262,8 +258,8 @@ function send() {
 
     /*-----------objet-creer--------------- */
     let sendAll = {
-      products,
       contact,
+      products,
     };
 
     const sendOrder = fetch("http://localhost:3000/api/products/order", {
@@ -284,9 +280,10 @@ function send() {
           console.log(`Resultat de response.ok : ${response.ok}`);
 
           console.log(content.orderId);
-          localStorage.setItem("responseId", content.orderId);
-
-          /*window.location = "confirmation-commande.html"*/
+          localStorage.setItem("orderId", content.orderId);
+          /*on rappelle le localstorage pour afficher la response dans url */
+          let idConfirm = localStorage.getItem("orderId");
+          window.location = `confirmation.html?${idConfirm}`;
         } else {
           console.log(`Réponse du serveur : ${response.status}`);
           alert(`Problème avec le serveur : erreur ${response.status}`);
@@ -295,12 +292,7 @@ function send() {
         console.log(e);
       }
     });
-    console.log(sendOrder);
   });
-
-  /* .then(function (value) {
-      document.getElementById("result").innerText = value.postData.text;
-    });*/
 }
 
 send();
