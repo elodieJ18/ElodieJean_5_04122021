@@ -146,7 +146,10 @@ for (let i = 0; i < productLocalStorage.length; i++) {
 }
 
 /*-------------------------------------Formulaire---Validation----------------------------------------- */
-function allForm() {
+
+/*-------------------------------*/
+
+function send() {
   let form = document.querySelector(".cart__order__form");
   let emailRegExp = new RegExp(
     "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
@@ -184,6 +187,7 @@ function allForm() {
     } else {
       firstNameErrorMsg.innerHTML =
         "Veuillez renseigner correctement ce champ.";
+      return false;
     }
   };
 
@@ -192,8 +196,10 @@ function allForm() {
 
     if (charRegExp.test(inputLastName.value)) {
       lastNameErrorMsg.innerHTML = "";
+      return true;
     } else {
       lastNameErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+      return false;
     }
   };
 
@@ -226,16 +232,51 @@ function allForm() {
       emailErrorMsg.innerHTML = "Veuillez renseigner correctement votre email.";
     }
   };
-}
-allForm();
 
-/*-------------------------------*/
-
-function send() {
   let btnorder = document.getElementById("order");
   btnorder.addEventListener("click", (e) => {
     e.preventDefault();
+    if (validFirstName(form.firstName)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
 
+    if (validLastName(form.lastName)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
+
+    if (validAddress(form.address)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
+
+    if (validCity(form.city)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
+
+    if (validCity(form.city)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
+
+    if (validEmail(form.email)) {
+      console.log("valide");
+    } else {
+      console.log("non-valide");
+      return false;
+    }
     /*---------------------preparation-de-l-envoie-------------------- */
     let itemFirstName = document.querySelector("#firstName").value;
     let itemLastName = document.querySelector("#lastName").value;
