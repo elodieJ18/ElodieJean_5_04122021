@@ -75,6 +75,10 @@ const addCart = async () => {
       return;
     }
 
+    if (itemQuantity > 100) {
+      alert("La commande ne peut pas dépasser plus de 100 produits");
+      return;
+    }
     /*Si le localstorage est vide alors on fait un tableau pour le localstorage*/
     if (itemOrdered == null) {
       itemOrdered = [];

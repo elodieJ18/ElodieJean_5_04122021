@@ -184,6 +184,7 @@ function send() {
 
     if (charRegExp.test(inputFirstName.value)) {
       firstNameErrorMsg.innerHTML = "";
+      return true;
     } else {
       firstNameErrorMsg.innerHTML =
         "Veuillez renseigner correctement ce champ.";
@@ -208,8 +209,10 @@ function send() {
 
     if (addressRegExp.test(inputAddress.value)) {
       addressErrorMsg.innerHTML = "";
+      return true;
     } else {
       addressErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+      return false;
     }
   };
 
@@ -218,8 +221,10 @@ function send() {
 
     if (charRegExp.test(inputCity.value)) {
       cityErrorMsg.innerHTML = "";
+      return true;
     } else {
       cityErrorMsg.innerHTML = "Veuillez renseigner correctement ce champ.";
+      return false;
     }
   };
 
@@ -228,8 +233,10 @@ function send() {
 
     if (emailRegExp.test(inputEmail.value)) {
       emailErrorMsg.innerHTML = "";
+      return true;
     } else {
       emailErrorMsg.innerHTML = "Veuillez renseigner correctement votre email.";
+      return false;
     }
   };
 
@@ -239,44 +246,45 @@ function send() {
     if (validFirstName(form.firstName)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
 
     if (validLastName(form.lastName)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
 
     if (validAddress(form.address)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
 
     if (validCity(form.city)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
 
     if (validCity(form.city)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
 
     if (validEmail(form.email)) {
       console.log("valide");
     } else {
-      console.log("non-valide");
-      return false;
+      console.log("invalide");
+      return;
     }
+
     /*---------------------preparation-de-l-envoie-------------------- */
     let itemFirstName = document.querySelector("#firstName").value;
     let itemLastName = document.querySelector("#lastName").value;
